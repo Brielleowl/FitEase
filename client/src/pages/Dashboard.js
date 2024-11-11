@@ -1,27 +1,14 @@
-import React, { useState } from 'react';
-import { 
-  Container, 
-  Paper, 
-  Tabs, 
-  Tab, 
-  Box, 
-  Typography 
-} from '@mui/material';
-import ChatBot from '../components/ChatBot';
-import GoalTracker from '../components/GoalTracker';
+import React, { useState } from "react";
+import { Container, Paper, Tabs, Tab, Box, Typography } from "@mui/material";
+import ChatBot from "../components/ChatBot";
+import GoalTracker from "../components/GoalTracker";
+import Logo from "../components/Logo";
 
 function TabPanel({ children, value, index, ...other }) {
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+    <div role="tabpanel" hidden={value !== index} {...other}>
+      <Logo />
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -52,4 +39,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard; 
+export default Dashboard;

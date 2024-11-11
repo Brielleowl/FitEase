@@ -24,6 +24,5 @@
     "mongoose": "^8.8.1",
     "react-router-dom": "^6.28.0"
   },
-  "devDependencies": {},
   "description": ""
 }

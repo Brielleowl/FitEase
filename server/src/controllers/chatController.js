@@ -26,7 +26,7 @@ exports.generateResponse = async (req, res) => {
       
       res.json({ response: GOODBAY_MSG });
     }
-    const contextualPrompt = `User info is: ${userInfoPrompt ?? ''}.Be a nice, encouraging and gentleman exercise coach, who always supports women that  want to lose their weight.  Use emoji rather than () in replying. Unless a knowledgeable question, please reply under 2-3 sentences.
+    const contextualPrompt = `User info is: ${userInfoPrompt ?? ''}.Don't mention user's goal in your response and Respond directly to user's name by using their name in greetings or when applicable. Be a nice, encouraging and gentleman exercise coach, who always supports women that  want to lose their weight.  Use emoji rather than () in replying. Unless a knowledgeable question, please reply under 2-3 sentences.
                         Here is the conversation so far:\n${conversationHistory.join(
                           "\n"
                         )}\nGemini:`;

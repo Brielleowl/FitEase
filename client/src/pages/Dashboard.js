@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Box, 
   Drawer, 
@@ -7,9 +8,11 @@ import {
   ListItemButton, 
   ListItemIcon, 
   ListItemText,
+  Button,
 } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
+import LogoutIcon from '@mui/icons-material/Logout';
 import ChatBot from '../components/ChatBot';
 import Goals from '../components/Goals';
 import Logo from '../components/Logo';
@@ -17,10 +20,16 @@ import Logo from '../components/Logo';
 const DRAWER_WIDTH = 240;
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState('chat');
 
   const handleTabChange = (value) => {
     setSelectedTab(value);
+  };
+
+  const handleLogout = () => {
+    // Add any logout logic here (clear localStorage, etc.)
+    navigate('/');
   };
 
   const menuItems = [
@@ -30,7 +39,6 @@ function Dashboard() {
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
-      {/* Permanent Drawer */}
       <Drawer
         variant="permanent"
         sx={{
@@ -41,6 +49,8 @@ function Dashboard() {
             boxSizing: 'border-box',
             bgcolor: '#fce3dc',
             borderRight: 'none',
+            display: 'flex',
+            flexDirection: 'column',
           },
         }}
       >
@@ -58,7 +68,7 @@ function Dashboard() {
         </Box>
 
         {/* Menu Items */}
-        <List>
+        <List sx={{ flexGrow: 1 }}>
           {menuItems.map((item) => (
             <ListItem key={item.value} disablePadding>
               <ListItemButton
@@ -76,6 +86,24 @@ function Dashboard() {
             </ListItem>
           ))}
         </List>
+
+        {/* Logout Button */}
+        <Box sx={{ p: 2, borderTop: '1px solid rgba(0, 0, 0, 0.12)' }}>
+          <Button
+            fullWidth
+            startIcon={<LogoutIcon />}
+            onClick={handleLogout}
+            sx={{
+              justifyContent: 'flex-start',
+              color: 'text.primary',
+              '&:hover': {
+                bgcolor: 'rgba(0, 0, 0, 0.08)',
+              },
+            }}
+          >
+            Logout
+          </Button>
+        </Box>
       </Drawer>
 
       {/* Main content */}

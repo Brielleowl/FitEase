@@ -54,7 +54,7 @@ function UserInfo() {
     setError(null);
 
     console.log('Submitting user info:', userInfo);
-
+    localStorage.setItem('username', userInfo.name);
     try {
       const response = await fetch('http://localhost:5000/users', {
         method: 'POST',
@@ -82,7 +82,7 @@ function UserInfo() {
       }
 
       localStorage.setItem('userId', data.userId);
-      
+
       setShowSuccess(true);
 
       setTimeout(() => {

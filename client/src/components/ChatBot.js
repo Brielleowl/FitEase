@@ -15,6 +15,28 @@ function ChatBot() {
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const getUserInitials = (name) => {
+    if (!name) return 'U';
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const username = localStorage.getItem('username') || 'User';
+
+  const getAvatarColor = (name) => {
+    const colors = [
+      '#1976d2', '#388e3c', '#d32f2f', '#7b1fa2', 
+      '#c2185b', '#0288d1', '#303f9f', '#ef6c00'
+    ];
+    
+    const index = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return colors[index % colors.length];
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!message.trim()) return;
@@ -57,7 +79,7 @@ function ChatBot() {
         borderBottom: '1px solid rgba(0,0,0,0.1)',
         bgcolor: 'white'
       }}>
-        <Typography variant="h6">AI Assistant</Typography>
+        <Typography variant="h6">Fionaise is helping you here....</Typography>
       </Box>
 
       {/* Chat messages */}
@@ -83,7 +105,7 @@ function ChatBot() {
               alignItems: 'flex-start'
             }}>
               {msg.type === 'ai' && (
-                <Avatar sx={{ bgcolor: 'primary.main' }}>AI</Avatar>
+                <Avatar sx={{ bgcolor: 'primary.main' }}>Fi</Avatar>
               )}
               <Paper
                 sx={{
@@ -97,14 +119,16 @@ function ChatBot() {
                 <Typography>{msg.content}</Typography>
               </Paper>
               {msg.type === 'user' && (
-                <Avatar sx={{ bgcolor: 'secondary.main' }}>U</Avatar>
+                <Avatar sx={{ bgcolor: getAvatarColor(username) }}>
+                  {getUserInitials(username)}
+                </Avatar>
               )}
             </Box>
           </Box>
         ))}
         {loading && (
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-            <Avatar sx={{ bgcolor: 'primary.main' }}>AI</Avatar>
+            <Avatar sx={{ bgcolor: 'primary.main' }}>Fi</Avatar>
             <Paper sx={{ p: 2, bgcolor: 'white', borderRadius: '1rem' }}>
               <Typography>Typing...</Typography>
             </Paper>

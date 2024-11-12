@@ -62,6 +62,7 @@ function Dashboard() {
             alignItems: 'center',
             justifyContent: 'center',
             borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+            bgcolor: 'white',
           }}
         >
           <Logo />

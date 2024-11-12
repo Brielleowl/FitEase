@@ -69,6 +69,13 @@ function Goals() {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setOpenDialog(true)}
+          sx={{
+            bgcolor: '#fce3dc',
+            color: 'black',
+            '&:hover': {
+              bgcolor: '#fbd3c9', // slightly darker shade for hover
+            }
+          }}
         >
           Add Goal
         </Button>
@@ -102,16 +109,19 @@ function Goals() {
                 <LinearProgress 
                   variant="determinate" 
                   value={goal.progress} 
-                  sx={{ height: 10, borderRadius: 5 }}
+                  sx={{ 
+                    height: 10, 
+                    borderRadius: 5,
+                    bgcolor: '#fce3dc40', // lighter background
+                    '& .MuiLinearProgress-bar': {
+                      bgcolor: '#fce3dc' // progress bar color
+                    }
+                  }}
                 />
                 <Typography align="right" variant="body2" sx={{ mt: 0.5 }}>
                   {goal.progress}%
                 </Typography>
               </Box>
-
-              <Typography variant="body2" sx={{ mt: 2 }}>
-                Notes: {goal.notes}
-              </Typography>
 
               <Box sx={{ mt: 2, display: 'flex', gap: 2, color: 'text.secondary' }}>
                 <Typography variant="body2">

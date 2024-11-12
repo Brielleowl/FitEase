@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 
 function GoalTracker() {
-  // This is a placeholder. You'll want to connect this to your state management
+    // default values for placeholder
   const goals = {
     currentWeight: 180,
     goalWeight: 160,

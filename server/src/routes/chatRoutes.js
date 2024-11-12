@@ -1,24 +1,39 @@
 const express = require('express');
 const router = express.Router();
-const { GoogleGenerativeAI } = require('@google/generative-ai'); // Hypothetical Gemini API module
-const User = require('../models/User'); // Assuming you have a User model
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const User = require('../models/User');
+const { summarizeUserInfo } = require('../utils/userUtils');
 
-// POST endpoint to handle chat interactions
 router.post('/conversation', async (req, res) => {
     try {
-        const { chatContent, userInfo } = req.body;
+        const { chatContent, userId } = req.body;
 
-        // Interact with Gemini
-        const geminiResponse = await GoogleGenerativeAI.interact(chatContent);
+        // Find the user by ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
 
-        // Save user info to MongoDB
-        const user = new User(userInfo);
-        await user.save();
+        // Generate user summary
+        const userSummary = summarizeUserInfo(user);
 
-        // Send response back to frontend
-        res.json({ geminiResponse });
+        const fullPrompt = `User Context: ${userSummary}\n\nUser Question: ${chatContent}`;
+
+        const genAI = new GoogleGenerativeAI('YOUR_API_KEY');
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+        const result = await model.generateContent(fullPrompt);
+        const response = await result.response;
+        const text = response.text();
+
+        res.json({ 
+            response: text,
+            userSummary
+        });
+
     } catch (error) {
-        res.status(500).json({ error: 'An error occurred' });
+        console.error('Error in conversation:', error);
+        res.status(500).json({ error: 'An error occurred during the conversation' });
     }
 });
 

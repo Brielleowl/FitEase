@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema({
   weight: Number,
   goalWeight: Number,
   timeline: Number,
-  // Add other user fields as necessary
 });
 
 module.exports = mongoose.model('User', userSchema); 

@@ -24,19 +24,28 @@ function ChatBot() {
     setLoading(true);
 
     try {
-      const result = await axios.post('http://localhost:5000/api/chat', {
-        prompt: message
-      });
-      
-      const aiMessage = { type: 'ai', content: result.data.response };
-      setChatHistory(prev => [...prev, aiMessage]);
+        const userId = localStorage.getItem('userId');
+        console.log('Sending request to server...'); // Debug log
+
+        const response = await axios.post('http://localhost:5000/api/chat', {
+            chatContent: message,
+            userId: userId
+        });
+        
+        console.log('Server response:', response.data); // Debug log
+        
+        const aiMessage = { type: 'ai', content: response.data.response };
+        setChatHistory(prev => [...prev, aiMessage]);
     } catch (error) {
-      console.error('Error:', error);
-      const errorMessage = { type: 'ai', content: 'Error occurred while fetching response' };
-      setChatHistory(prev => [...prev, errorMessage]);
+        console.error('Error details:', error);
+        const errorMessage = { 
+            type: 'ai', 
+            content: 'Error connecting to the server. Please try again.' 
+        };
+        setChatHistory(prev => [...prev, errorMessage]);
     } finally {
-      setLoading(false);
-      setMessage('');
+        setLoading(false);
+        setMessage('');
     }
   };
 

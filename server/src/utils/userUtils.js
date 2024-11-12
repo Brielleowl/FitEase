@@ -1,8 +1,29 @@
-function summarizeUserInfo(userInfo) {
-    const weightDiff = userInfo.userInfo.weight - userInfo.userInfo.goalWeight;
-    const weeklyGoal = (weightDiff / userInfo.userInfo.timeline).toFixed(2);
-    
-    return `Name: ${userInfo.username}, Age: ${userInfo.userInfo.age}, Height: ${userInfo.userInfo.height} inches, Current Weight: ${userInfo.userInfo.weight} lbs, Goal Weight: ${userInfo.userInfo.goalWeight} lbs, Timeline: ${userInfo.userInfo.timeline} weeks, BMI: ${userInfo.userInfo.bmi}. They want to ${weightDiff > 0 ? 'lose' : 'gain'} ${Math.abs(weightDiff)} lbs at a rate of ${Math.abs(weeklyGoal)} lbs per week.`;
-}
+const User = require("../models/User");
 
-module.exports = { summarizeUserInfo }; 
+const summarizeUserInfo = async (userId) => {
+  try {
+    console.log("userId", userId);
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return "";
+    }
+
+    const weightDiff = user.weight - user.goalWeight;
+    const weeklyGoal = weightDiff / user.timeline;
+
+    return `Name: ${user.name}
+Age: ${user.age}
+Current Weight: ${user.weight} lbs
+Goal Weight: ${user.goalWeight} lbs
+Timeline: ${user.timeline} weeks
+Weekly Goal: ${weeklyGoal.toFixed(1)} lbs`;
+  } catch (error) {
+    console.error("Error in summarizeUserInfo:", error);
+    return "";
+  }
+};
+
+module.exports = {
+  summarizeUserInfo,
+};

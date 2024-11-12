@@ -6,6 +6,7 @@ router.post('/', async (req, res) => {
     console.log('Received user creation request:', req.body);
     try {
         const userInfo = req.body;
+        console.log("userInfo", userInfo);
         const user = new User(userInfo);
         await user.save();
         

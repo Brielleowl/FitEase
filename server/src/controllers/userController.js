@@ -13,6 +13,7 @@ exports.saveHealthCheck = async (req, res) => {
 
 exports.saveUserInfo = async (req, res) => {
   try {
+    console.log("req.body", req.body);
     const {
       name,
       age,
@@ -20,7 +21,6 @@ exports.saveUserInfo = async (req, res) => {
       weight,
       goalWeight,
       timeline,
-      healthConditions
     } = req.body;
 
     // Calculate BMI
@@ -36,7 +36,6 @@ exports.saveUserInfo = async (req, res) => {
       goalWeight,
       timeline,
       bmi,
-      healthConditions
     });
 
     await user.save();

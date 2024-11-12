@@ -62,15 +62,13 @@ function UserInfo() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: userInfo.name,
-          userInfo: {
+            name: userInfo.name,
             age: parseInt(userInfo.age),
             height: parseFloat(userInfo.height),
             weight: parseFloat(userInfo.weight),
             goalWeight: parseFloat(userInfo.goalWeight),
             timeline: parseInt(userInfo.timeline),
             bmi: parseFloat(bmi)
-          }
         }),
       });
 

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Conversation with Memory</title>
+</head>
+<body>
+    <h1>Interactive Gemini Conversation</h1>
+    <div id="conversation">
+        <div id="messages"></div>
+    </div>
+    <textarea id="userInput" rows="3" placeholder="Type your message here..."></textarea>
+    <button id="sendButton">Send</button>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "@google/generative-ai": "https://esm.run/@google/generative-ai"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+        
+        const API_KEY = "AIzaSyDeo2crxaEGKqzaEzzhFaUyDzNtx72T4M4"; // Replace this with a secure backend call in production
+        const genAI = new GoogleGenerativeAI(API_KEY);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+        // Initialize conversation history
+        let conversationHistory = [];
+
+        // Event listener for the Send button
+        document.getElementById('sendButton').addEventListener('click', async () => {
+            const userInput = document.getElementById('userInput').value.trim();
+            displayMessage("User", userInput);
+            document.getElementById('userInput').value = '';
+
+            // Add user input to conversation history
+            conversationHistory.push(`User: ${userInput}`);
+
+            // Check if the user said "bye" to end the conversation
+            if (userInput.toLowerCase() === "bye") {
+                displayMessage("Gemini", "Goodbye! Take care and keep going strong 💪😊");
+                return;
+            }
+
+            try {
+                // Create a prompt with conversation history
+                const prompt = `Be a nice, encouraging and gentleman exercise coach, who always supports women that  want to lose their weight.  Use emoji rather than () in replying. Unless a knowledgeable question, please reply under 2-3 sentences.
+                                Here is the conversation so far:\n${conversationHistory.join('\n')}\nGemini:`;
+
+                // Get response from Gemini model
+                const result = await model.generateContent(prompt);
+                const geminiResponse = result.response.text();
+
+                // Display and add Gemini response to conversation history
+                displayMessage("Gemini", geminiResponse);
+                conversationHistory.push(`Gemini: ${geminiResponse}`);
+            } catch (error) {
+                console.error("Error in conversation:", error);
+                displayMessage("Gemini", "I'm having trouble responding right now. Please try again later.");
+            }
+        });
+
+        // Function to display messages
+        function displayMessage(sender, message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = sender.toLowerCase();
+            messageDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
+            document.getElementById('messages').appendChild(messageDiv);
+        }
+    </script>
+
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; margin-top: 20px; }
+        #conversation { width: 80%; max-width: 600px; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; overflow-y: auto; max-height: 400px; }
+        #messages div { margin: 5px 0; }
+        .user { text-align: right; color: #007bff; }
+        .gemini { text-align: left; color: #28a745; }
+        #userInput { width: 80%; max-width: 600px; }
+        #sendButton { margin-top: 5px; }
+    </style>
+</body>
+</html>

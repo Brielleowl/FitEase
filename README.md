@@ -17,31 +17,10 @@ FitEase is an AI-powered web application designed to provide personalized weight
 - **Database**: MongoDB
 - **AI**: Google Gemini 1.5 Flash
 
-## 🔧 Installation & Setup
+## 🔧 Setup and Run
 
-### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB
-- Google Gemini API key
+you can access the application at https://fit-ease-frontend.vercel.app/
 
-### Backend and Database Setup
-
-1. Navigate to server directory:
-  a. cd server
-  b. run `mongod --dbpath server/data`
-  c. run `npm install`
-  d. run `npm start`
-  
-
-
-### Frontend Setup
-
-1. Navigate to client directory:
-  a. cd client
-  a. run `npm install`
-  b. run `npm start`
-
-The application will be available at `http://localhost:3000`
 
 ## 🤖 AI Implementation
 

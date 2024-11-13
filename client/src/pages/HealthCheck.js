@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Container,
@@ -9,6 +9,7 @@ import {
   Button,
   Paper,
   Box,
+  Alert,
 } from "@mui/material";
 import Logo from "../components/Logo";
 
@@ -28,16 +29,43 @@ function HealthCheck() {
     none: false,
   });
 
+  const [hasConditions, setHasConditions] = useState(false);
+
+  useEffect(() => {
+    // Check if any condition except 'none' is selected
+    const selectedConditions = Object.entries(conditions)
+      .filter(([key]) => key !== 'none')
+      .some(([_, value]) => value);
+    
+    setHasConditions(selectedConditions);
+
+    // If any condition is selected, uncheck 'none'
+    if (selectedConditions && conditions.none) {
+      setConditions(prev => ({ ...prev, none: false }));
+    }
+  }, [conditions]);
+
   const handleChange = (event) => {
-    setConditions({
-      ...conditions,
-      [event.target.name]: event.target.checked,
-    });
+    const { name, checked } = event.target;
+    
+    if (name === 'none' && checked) {
+      // If 'none' is checked, uncheck all other conditions
+      setConditions(Object.keys(conditions).reduce((acc, key) => ({
+        ...acc,
+        [key]: key === 'none' ? true : false
+      }), {}));
+    } else {
+      setConditions({
+        ...conditions,
+        [name]: checked,
+      });
+    }
   };
 
   const handleSubmit = () => {
-    // Here you can add logic to handle health conditions
-    navigate("/user-info");
+    if (!hasConditions) {
+      navigate("/user-info");
+    }
   };
 
   return (
@@ -165,8 +193,24 @@ function HealthCheck() {
             />
           </FormGroup>
 
+          {hasConditions && (
+            <Alert severity="warning" sx={{ mt: 2 }}>
+              If you have any pre-existing health conditions, we recommend not using this app and consulting a healthcare professional for personalized support
+            </Alert>
+          )}
+
           <Box sx={{ mt: 3 }}>
-            <Button variant="contained" onClick={handleSubmit}>
+            <Button 
+              variant="contained" 
+              onClick={handleSubmit}
+              disabled={hasConditions}
+              sx={{
+                bgcolor: hasConditions ? 'grey.400' : '#ff725e',
+                '&:hover': {
+                  bgcolor: hasConditions ? 'grey.500' : '#ff8d7f',
+                },
+              }}
+            >
               Continue
             </Button>
           </Box>

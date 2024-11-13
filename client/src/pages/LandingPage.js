@@ -12,7 +12,7 @@ function LandingPage() {
         <Logo />
         <nav>
           <ul>
-            <li><a href="#about">About Us</a></li>
+            <li><a href="/about">About Us</a></li>
           </ul>
         </nav>
       </header>

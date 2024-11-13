@@ -4,6 +4,7 @@ import LandingPage from './pages/LandingPage';
 import HealthCheck from './pages/HealthCheck';
 import UserInfo from './pages/UserInfo';
 import Dashboard from './pages/Dashboard';
+import AboutUs from './pages/AboutUs';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/user-info" element={<UserInfo />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/goals" element={<Dashboard />} />
+        <Route path="/about" element={<AboutUs />} />
       </Routes>
     </Router>
   );

@@ -24,7 +24,13 @@ function Dashboard() {
   const [selectedTab, setSelectedTab] = useState('chat');
 
   const handleTabChange = (value) => {
-    setSelectedTab(value);
+    if (value === 'goals') {
+      // Open Goals in a new tab
+      window.open('/dashboard?tab=goals', '_blank');
+    } else {
+      // Regular tab switching for Chat
+      setSelectedTab(value);
+    }
   };
 
   const handleLogout = () => {
@@ -36,6 +42,15 @@ function Dashboard() {
     { icon: <ChatIcon />, label: 'Chat', value: 'chat' },
     { icon: <TrackChangesIcon />, label: 'Goals', value: 'goals' },
   ];
+
+  // Get the tab parameter from URL if it exists
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam) {
+      setSelectedTab(tabParam);
+    }
+  }, []);
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
@@ -56,6 +71,7 @@ function Dashboard() {
       >
         {/* Logo Section */}
         <Box
+          onClick={() => window.open('/', '_blank')}
           sx={{
             height: '80px',
             display: 'flex',
@@ -63,6 +79,10 @@ function Dashboard() {
             justifyContent: 'center',
             borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
             bgcolor: 'white',
+            cursor: 'pointer',
+            '&:hover': {
+              opacity: 0.8,
+            },
           }}
         >
           <Logo />
@@ -88,9 +108,24 @@ function Dashboard() {
           ))}
         </List>
 
+        {/* Warning Message */}
+        <Box 
+          sx={{ 
+            p: 2, 
+            borderTop: '1px solid rgba(0, 0, 0, 0.12)',
+            color: 'text.primary',
+            fontSize: '0.75rem',
+            textAlign: 'center',
+            fontStyle: 'italic',
+            opacity: 0.8
+          }}
+        >
+          Please don't close or refresh your browser while we're working on the next iteration.
+        </Box>
+
         {/* Logout Button */}
         <Box sx={{ p: 2, borderTop: '1px solid rgba(0, 0, 0, 0.12)' }}>
-          <Button
+          {/* <Button
             fullWidth
             startIcon={<LogoutIcon />}
             onClick={handleLogout}
@@ -103,7 +138,7 @@ function Dashboard() {
             }}
           >
             Logout
-          </Button>
+          </Button> */}
         </Box>
       </Drawer>
 

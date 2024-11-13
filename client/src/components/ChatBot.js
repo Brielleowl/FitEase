@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios';
+import config from '../config/config';
 
 function ChatBot() {
   const [message, setMessage] = useState('');
@@ -49,7 +50,7 @@ function ChatBot() {
         const userId = localStorage.getItem('userId');
         console.log('Sending request to server...'); // Debug log
 
-        const response = await axios.post('http://localhost:5000/api/chat', {
+        const response = await axios.post(`${config.API_BASE_URL}/api/chat`, {
             chatContent: message,
             userId: userId
         });

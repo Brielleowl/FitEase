@@ -11,6 +11,7 @@ import {
   Snackbar
 } from '@mui/material';
 import Logo from "../components/Logo";
+import config from '../config/config';
 
 function UserInfo() {
   const navigate = useNavigate();
@@ -42,11 +43,6 @@ function UserInfo() {
       [e.target.name]: e.target.value
     });
   };
-  const testRequest = async () => {
-    const response = await fetch('http://localhost:5000/test');
-    const data = await response.json();
-    console.log(data);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,7 +52,7 @@ function UserInfo() {
     console.log('Submitting user info:', userInfo);
     localStorage.setItem('username', userInfo.name);
     try {
-      const response = await fetch('http://localhost:5000/users', {
+      const response = await fetch(`${config.API_BASE_URL}/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
